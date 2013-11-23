@@ -33,7 +33,11 @@ void CallMyNamePlayer::setup(string filename){
     timer.pauseTimer();
     
     // load sound file into memory
-    player.loadSound(filename, false);
+//    player.loadSound(filename, false);
+    player.loadSound(filename);
+//    player.play();
+//    player.stop();
+    
     // allow multiplayer
     // not working very well..
 //    player.setMultiPlay(true);
@@ -43,6 +47,7 @@ void CallMyNamePlayer::setup(string filename){
         ofAddListener(timer.TIMER_REACHED, this, &CallMyNamePlayer::play);
         bWasSetup = true;
     }
+    
 }
 
 void CallMyNamePlayer::setRect(float x, float y, float w, float h, ofColor c){
@@ -64,15 +69,21 @@ void CallMyNamePlayer::setVolume(float vol){
 
 
 void CallMyNamePlayer::play(){
+    timer.reset();
     player.play();
 }
 
 void CallMyNamePlayer::play(ofEventArgs &e){
     ofLogNotice("event!");
-    player.play();
+    play();
 }
 
 void CallMyNamePlayer::playAfterMs(int ms){
+    if (player.getIsPlaying()) {
+
+        player.stop();
+        player.setPosition(0);
+    }
     timer.reset();
     timer.setTimer(ms);
     timer.startTimer();

@@ -79,7 +79,7 @@ void testApp::keyPressed(int key){
     if (key == ' '){
         for (int i = 0; i < callMyNamePlayer.size(); i++) {
 //            callMyNamePlayer[i].play();
-            callMyNamePlayer[i].playAfterMs(i*10);
+            callMyNamePlayer[i].playAfterMs(i*30);
         }
     }
     else if (key == 'a'){
