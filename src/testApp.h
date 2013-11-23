@@ -5,7 +5,6 @@
 #include "ofxMidi.h"
 #include "ofxFontStash.h"
 #include "ofxOsc.h"
-#include "ofxAudioUnit.h"
 
 #include "CallMyNamePlayer.h"
 
