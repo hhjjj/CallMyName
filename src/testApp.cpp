@@ -78,7 +78,8 @@ void testApp::keyPressed(int key){
 
     if (key == ' '){
         for (int i = 0; i < callMyNamePlayer.size(); i++) {
-            callMyNamePlayer[i].play();
+//            callMyNamePlayer[i].play();
+            callMyNamePlayer[i].playAfterMs(i*10);
         }
     }
     else if (key == 'a'){
@@ -92,7 +93,7 @@ void testApp::keyPressed(int key){
         counter++;
     }
     else if (key == 's'){
-
+        callMyNamePlayer[0].playAfterMs(1000);
     }
     else if (key =='f'){
         ofToggleFullscreen();

@@ -15,6 +15,8 @@ CallMyNamePlayer::CallMyNamePlayer(){
 CallMyNamePlayer::~CallMyNamePlayer(){
     if(bWasSetup){
 //        ofRemoveListener(ofEvents().draw, this, &CallMyNamePlayer::draw);
+//        ofRemoveListener(ofEvents().update, this, &CallMyNamePlayer::update);
+        ofRemoveListener(timer.TIMER_REACHED, this, &CallMyNamePlayer::play);
     }
     bWasSetup = false;
 }
@@ -27,6 +29,8 @@ void CallMyNamePlayer::setup(string filename){
     width = 0;
     height = 0;
     setRect(pos.x, pos.y, width, height, ofColor(255,255,255));
+    timer.setup(10, false);
+    timer.pauseTimer();
     
     // load sound file into memory
     player.loadSound(filename, false);
@@ -35,6 +39,8 @@ void CallMyNamePlayer::setup(string filename){
 //    player.setMultiPlay(true);
     if(!bWasSetup){
 //        ofAddListener(ofEvents().draw, this, &CallMyNamePlayer::draw);
+//        ofAddListener(ofEvents().update, this, &CallMyNamePlayer::update);
+        ofAddListener(timer.TIMER_REACHED, this, &CallMyNamePlayer::play);
         bWasSetup = true;
     }
 }
@@ -61,6 +67,17 @@ void CallMyNamePlayer::play(){
     player.play();
 }
 
+void CallMyNamePlayer::play(ofEventArgs &e){
+    ofLogNotice("event!");
+    player.play();
+}
+
+void CallMyNamePlayer::playAfterMs(int ms){
+    timer.reset();
+    timer.setTimer(ms);
+    timer.startTimer();
+}
+
 void CallMyNamePlayer::draw(){
     ofPushStyle();
     ofSetColor(rectColor);
@@ -71,6 +88,9 @@ void CallMyNamePlayer::draw(){
     ofNoFill();
     ofRect(rect);
     ofPopStyle();
+}
+void CallMyNamePlayer::update(ofEventArgs& event){
+
 }
 
 //void  CallMyNamePlayer::draw(ofEventArgs& event){
