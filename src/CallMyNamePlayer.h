@@ -10,6 +10,8 @@
 
 #include "ofMain.h"
 #include "ofxTimer.h"
+//#include "ofxiOSSoundPlayer.h"
+//#include "ofxOpenALSoundPlayer.h"
 
 class CallMyNamePlayer {
     
@@ -29,6 +31,7 @@ public:
 private:
     ofRectangle rect;
     ofSoundPlayer player;
+//    ofxOpenALSoundPlayer player;
     bool bWasSetup;
     ofVec2f pos;
     float width;

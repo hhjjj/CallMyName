@@ -23,7 +23,7 @@ void testApp::setup(){
         
         CallMyNamePlayer player;
         callMyNamePlayer.push_back(player);
-        callMyNamePlayer[i].setup("names/"+ofToString(i+1)+".wav");
+        callMyNamePlayer[i].setup(ofFilePath::getAbsolutePath("names/"+ofToString(i+1)+".wav"));
 
 
     }
@@ -79,7 +79,7 @@ void testApp::keyPressed(int key){
     if (key == ' '){
         for (int i = 0; i < callMyNamePlayer.size(); i++) {
 //            callMyNamePlayer[i].play();
-            callMyNamePlayer[i].playAfterMs(i*30);
+            callMyNamePlayer[i].playAfterMs(i*70);
         }
     }
     else if (key == 'a'){
