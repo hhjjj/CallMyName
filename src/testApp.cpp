@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofSetDataPathRoot("../Resources/data/");
     ofSetWindowTitle("ANTICLIMAX - Call My Name");
     fileCount = 0;
     string path = "";
