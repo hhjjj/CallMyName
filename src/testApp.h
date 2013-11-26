@@ -8,6 +8,7 @@
 
 #include "CallMyNamePlayer.h"
 #include "CallMyNameController.h"
+#include "ACMidiController.h"
 
 
 class testApp : public ofBaseApp{
@@ -28,6 +29,6 @@ public:
     void gotMessage(ofMessage msg);
     
     CallMyNameController callMyNameController;
-    
+    ACMidiController midiController;
     
 };

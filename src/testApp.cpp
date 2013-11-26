@@ -4,7 +4,9 @@
 void testApp::setup(){
     ofSetDataPathRoot("../Resources/data/");
     ofSetWindowTitle("ANTICLIMAX - Call My Name");
+    ofEnableSmoothing();
     
+    midiController.setup();
 
     callMyNameController.setup("names/","wav");
     callMyNameController.setPlayerRectSize();
