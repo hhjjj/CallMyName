@@ -81,7 +81,8 @@ void ACMidiController::guiEvent(ofxUIEventArgs &e)
     if( name == "Open MIDI Ports"){
         portLists.clear();
         vector<string> p = midiIn.getPortList();
-        ofLogNotice(ofToString(p.size()));
+        //ofLogNotice(ofToString(p.size()));
+        // ???????
         for (int i = 0 ; i < p.size(); i++){
             ddl->addToggle(p[i]);
         }
