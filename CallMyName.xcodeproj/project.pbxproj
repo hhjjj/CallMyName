@@ -63,6 +63,8 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		F19F46E61844570400573CEC /* ACRandomizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F19F46E41844570400573CEC /* ACRandomizer.cpp */; };
+		F19F46E91844571300573CEC /* CallMyNameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F19F46E71844571300573CEC /* CallMyNameController.cpp */; };
 		F1C4C7EC1842171A00A988E5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C4C7EB1842171A00A988E5 /* AVFoundation.framework */; };
 		F1DCF0EB18407E680045D90E /* CallMyNamePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1DCF0E918407E680045D90E /* CallMyNamePlayer.cpp */; };
 		F1DCF2F01840AA920045D90E /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DCF2EF1840AA920045D90E /* AudioUnit.framework */; };
@@ -217,6 +219,10 @@
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		E8BFFBD7382B36DC6B6B876E /* utf8.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = utf8.h; path = ../../../addons/ofxUnicode/libs/utf8cpp/include/utf8.h; sourceTree = SOURCE_ROOT; };
 		ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = ../../../addons/ofxGui/src/ofxGuiGroup.cpp; sourceTree = SOURCE_ROOT; };
+		F19F46E41844570400573CEC /* ACRandomizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACRandomizer.cpp; sourceTree = "<group>"; };
+		F19F46E51844570400573CEC /* ACRandomizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRandomizer.h; sourceTree = "<group>"; };
+		F19F46E71844571300573CEC /* CallMyNameController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallMyNameController.cpp; sourceTree = "<group>"; };
+		F19F46E81844571300573CEC /* CallMyNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMyNameController.h; sourceTree = "<group>"; };
 		F1C4C7EB1842171A00A988E5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F1C4C7F71842219200A988E5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		F1DCF0E918407E680045D90E /* CallMyNamePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallMyNamePlayer.cpp; sourceTree = "<group>"; };
@@ -644,6 +650,10 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F1DCF0E918407E680045D90E /* CallMyNamePlayer.cpp */,
 				F1DCF0EA18407E680045D90E /* CallMyNamePlayer.h */,
+				F19F46E41844570400573CEC /* ACRandomizer.cpp */,
+				F19F46E51844570400573CEC /* ACRandomizer.h */,
+				F19F46E71844571300573CEC /* CallMyNameController.cpp */,
+				F19F46E81844571300573CEC /* CallMyNameController.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -819,8 +829,10 @@
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				A29D8C96AE042ECEAA1BD4F3 /* NetworkingUtilsWin.cpp in Sources */,
 				28090DEB5109115003E8F1C5 /* UdpSocketWin.cpp in Sources */,
+				F19F46E91844571300573CEC /* CallMyNameController.cpp in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
+				F19F46E61844570400573CEC /* ACRandomizer.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
 				F1DCF0EB18407E680045D90E /* CallMyNamePlayer.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,

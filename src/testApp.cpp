@@ -4,11 +4,16 @@
 void testApp::setup(){
     ofSetDataPathRoot("../Resources/data/");
     ofSetWindowTitle("ANTICLIMAX - Call My Name");
+    
+    /*
     fileCount = 0;
     string path = "";
     dir.allowExt("wav");
     dir.listDir("names/");
     dir.sort();
+    ofLogNotice(ofFilePath::getAbsolutePath(dir.path()));
+    ofLogNotice(ofFilePath::getAbsolutePath(dir.getPath(0)));
+    
     fileCount = dir.numFiles();
     ofLogNotice("fileCount: "+ofToString(fileCount));
     
@@ -16,6 +21,8 @@ void testApp::setup(){
     callMyNamePlayer.reserve(fileCount);
     callMyNamePlayer.clear();
     
+    
+    // be flexible with file name please!!!!
     for (int i = 0 ; i < fileCount ; i++){
 //        ofLogNotice(dir.getName(i));
 //        CallMyNamePlayer player;
@@ -39,7 +46,6 @@ void testApp::setup(){
     ofLogNotice("h");
     ofLogNotice(ofToString(h));
     
-    //for (int i = 0 ; i < callMyNamePlayer.size() ; i++){
 
     for (int i  = 0; i < numOfRow; i++) {
         for ( int j = 0; j < numOfCol; j++){
@@ -50,7 +56,16 @@ void testApp::setup(){
     }
     
         
-    //}
+    */
+    
+    
+    
+    callMyNameController.setup("names/","wav");
+    callMyNameController.setPlayerRectSize();
+    
+    
+    
+    
     
     counter = 0;
     ofSetVerticalSync(true);
@@ -67,34 +82,36 @@ void testApp::update(){
 void testApp::draw(){
     ofBackground(0);
 
-
+/*
 //    ofLogNotice("draw");
     for (int i = 0 ; i < callMyNamePlayer.size() ; i++){
         callMyNamePlayer[i].draw();
     }
+  */
+    callMyNameController.draw();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
     if (key == ' '){
-        for (int i = 0; i < callMyNamePlayer.size(); i++) {
-//            callMyNamePlayer[i].play();
-            callMyNamePlayer[i].playAfterMs(i*70);
-        }
+//        for (int i = 0; i < callMyNamePlayer.size(); i++) {
+//            callMyNamePlayer[i].playAfterMs(i*70);
+//        }
+        callMyNameController.playAll();
     }
     else if (key == 'a'){
 
-        callMyNamePlayer[0].play();
+//        callMyNamePlayer[0].play();
     }
     else if (key =='d'){
 
-        callMyNamePlayer[counter].play();
-        ofLogNotice(ofToString(counter));
-        counter++;
+//        callMyNamePlayer[counter].play();
+//        ofLogNotice(ofToString(counter));
+//        counter++;
     }
     else if (key == 's'){
-        callMyNamePlayer[0].playAfterMs(1000);
+//        callMyNamePlayer[0].playAfterMs(1000);
     }
     else if (key =='f'){
         ofToggleFullscreen();
@@ -128,26 +145,28 @@ void testApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-    ofLogNotice(ofToString(ofGetWidth()));
-    int numOfCol = 10;
-    int numOfRow = (int)ceil(fileCount / 10);
-    ofLogNotice(ofToString(numOfRow));
-    float hMargin = 10;
-    float vMargin = 10;
-    float _w = (ofGetWidth()- (numOfCol + 2) * hMargin) / (numOfCol);
-    float _h = (ofGetHeight()- (numOfRow + 2) * vMargin) / (numOfRow);
-    ofLogNotice("h");
-    ofLogNotice(ofToString(h));
+//    ofLogNotice(ofToString(ofGetWidth()));
+//    int numOfCol = 10;
+//    int numOfRow = (int)ceil(fileCount / 10);
+//    ofLogNotice(ofToString(numOfRow));
+//    float hMargin = 10;
+//    float vMargin = 10;
+//    float _w = (ofGetWidth()- (numOfCol + 2) * hMargin) / (numOfCol);
+//    float _h = (ofGetHeight()- (numOfRow + 2) * vMargin) / (numOfRow);
+//    ofLogNotice("h");
+//    ofLogNotice(ofToString(h));
+//    
+//    //for (int i = 0 ; i < callMyNamePlayer.size() ; i++){
+//    
+//    for (int i  = 0; i < numOfRow; i++) {
+//        for ( int j = 0; j < numOfCol; j++){
+//            
+//            callMyNamePlayer[i *numOfCol + j].setRect(hMargin*(j+1) + j*_w, vMargin*(i+1) + i*_h, _w, _h, ofColor(255, 0 , 0));
+//            
+//        }
+//    }
     
-    //for (int i = 0 ; i < callMyNamePlayer.size() ; i++){
-    
-    for (int i  = 0; i < numOfRow; i++) {
-        for ( int j = 0; j < numOfCol; j++){
-            
-            callMyNamePlayer[i *numOfCol + j].setRect(hMargin*(j+1) + j*_w, vMargin*(i+1) + i*_h, _w, _h, ofColor(255, 0 , 0));
-            
-        }
-    }
+    callMyNameController.setPlayerRectSize();
 
 }
 

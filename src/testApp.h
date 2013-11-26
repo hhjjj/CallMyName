@@ -6,9 +6,8 @@
 #include "ofxFontStash.h"
 #include "ofxOsc.h"
 
-
-
 #include "CallMyNamePlayer.h"
+#include "CallMyNameController.h"
 
 
 class testApp : public ofBaseApp{
@@ -32,4 +31,8 @@ public:
     vector<CallMyNamePlayer> callMyNamePlayer;
     int fileCount;
     int counter;
+    
+    CallMyNameController callMyNameController;
+    
+    
 };
