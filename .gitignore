@@ -159,4 +159,5 @@ xcuserdata
 #
 # ...none. Everything is now explained.
 
-bin/
+*.wav
+*.app
