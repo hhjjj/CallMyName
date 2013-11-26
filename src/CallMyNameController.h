@@ -25,7 +25,7 @@ public:
     
     void playAll();
     
-    void randomizePlayOrder();
+    void shufflePlayOrder();
 
 private:
     vector<CallMyNamePlayer> callMyNamePlayer;
