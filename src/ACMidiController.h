@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 #include "ofxMidi.h"
-#include "ofxUI.h"
+#include "ACMidiButton.h"
 
 class ACMidiController: public ofxMidiListener{
 public:
@@ -23,15 +23,18 @@ public:
     void openPort(string deviceName);
     void closePorts();
     void newMidiMessage(ofxMidiMessage& eventArgs);
+    
 private:
+    ofTrueTypeFont font;
     ofxMidiIn midiIn;
 	ofxMidiMessage midiMessage;
     
     vector<string> portLists;
-    
-    ofxUICanvas *gui;
-    ofxUIDropDownList *ddl;
-	void guiEvent(ofxUIEventArgs &e);
-    
     void draw(ofEventArgs& event);
+    
+    ACMidiButton midiPortListOpenButton;
+    vector<ACMidiButton*> portListButtons;
+    
+    void buttonEventHandler(bool &bPress);
+    
 };

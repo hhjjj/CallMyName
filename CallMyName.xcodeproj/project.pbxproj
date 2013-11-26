@@ -28,6 +28,7 @@
 		67343E1218411D5E007DB3F9 /* ofxMidiMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 67343DF718411D5E007DB3F9 /* ofxMidiMessage.cpp */; };
 		67343E1318411D5E007DB3F9 /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 67343DF918411D5E007DB3F9 /* ofxMidiOut.cpp */; };
 		67343E2118412090007DB3F9 /* ofxTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 67343E1F18412090007DB3F9 /* ofxTimer.cpp */; };
+		6747705E18450FE70082A6AC /* ACMidiButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6747705C18450FE70082A6AC /* ACMidiButton.cpp */; };
 		67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B361208CD4107E479F04E7B /* NetworkingUtils.cpp */; };
 		72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65EEFA3DA3526E9CDD9C21F9 /* ofxOscBundle.cpp */; };
 		7B388D550037229D99E7F52A /* ofxFontStash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A535D3474A0EAB684CAC5D /* ofxFontStash.cpp */; };
@@ -161,6 +162,8 @@
 		67343DFB18411D5E007DB3F9 /* ofxMidiTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiTypes.h; sourceTree = "<group>"; };
 		67343E1F18412090007DB3F9 /* ofxTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimer.cpp; sourceTree = "<group>"; };
 		67343E2018412090007DB3F9 /* ofxTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimer.h; sourceTree = "<group>"; };
+		6747705C18450FE70082A6AC /* ACMidiButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACMidiButton.cpp; sourceTree = "<group>"; };
+		6747705D18450FE70082A6AC /* ACMidiButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMidiButton.h; sourceTree = "<group>"; };
 		6B65E6930994CC4B2D2B8B33 /* OscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscPacketListener.h; sourceTree = SOURCE_ROOT; };
 		7689F8A0F3D0B7635A8C3104 /* ofxOscArg.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscArg.h; path = ../../../addons/ofxOsc/src/ofxOscArg.h; sourceTree = SOURCE_ROOT; };
 		78D67A00EB899FAC09430597 /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = ../../../addons/ofxGui/src/ofxLabel.cpp; sourceTree = SOURCE_ROOT; };
@@ -720,6 +723,8 @@
 				F19F46E81844571300573CEC /* CallMyNameController.h */,
 				F11F3D6A1844C1FC00587F31 /* ACMidiController.cpp */,
 				F11F3D6B1844C1FC00587F31 /* ACMidiController.h */,
+				6747705C18450FE70082A6AC /* ACMidiButton.cpp */,
+				6747705D18450FE70082A6AC /* ACMidiButton.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1017,6 +1022,7 @@
 				67343E1218411D5E007DB3F9 /* ofxMidiMessage.cpp in Sources */,
 				67343E1318411D5E007DB3F9 /* ofxMidiOut.cpp in Sources */,
 				67343E2118412090007DB3F9 /* ofxTimer.cpp in Sources */,
+				6747705E18450FE70082A6AC /* ACMidiButton.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

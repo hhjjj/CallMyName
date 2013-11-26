@@ -9,41 +9,30 @@
 #include "ACMidiController.h"
 
 ACMidiController::ACMidiController(){
-    
 }
 
 ACMidiController::~ACMidiController(){
     midiIn.closePort();
     midiIn.removeListener(this);
     ofRemoveListener(ofEvents().draw, this, &ACMidiController::draw);
+    ofRemoveListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::buttonEventHandler);
+
 }
 
 void ACMidiController::setup() {
+    
+    font.loadFont("NewMedia Fett.ttf", 29);
+    
     midiIn.ignoreTypes(true, true, true);
-    // add testApp as a listener
+    
+    midiPortListOpenButton.setup(20, 20, "OPEN MIDI PORTS");
+    midiPortListOpenButton.setPressedColor(ofColor(255,0,0));
+    midiPortListOpenButton.setReleasedColor(ofColor(255,255,255));
+    
+    
     midiIn.addListener(this);
-    
-    gui = new ofxUICanvas();
-
-    //gui->addButton("Open MIDI Lists", false);
-    //gui->addLabel("MIDI Ports",OFX_UI_FONT_MEDIUM);
-    //gui->addSpacer();
-//    gui->addLabelButton("Open MIDI Lists", false, true);
-//    gui->setDrawWidgetPadding(true);
-    
-    ddl = gui->addDropDownList("Open MIDI Ports", portLists);
-    ddl->setAllowMultiple(false);
-    
-    gui->autoSizeToFitWidgets();
-    
-
-    
-    ofAddListener(gui->newGUIEvent, this, &ACMidiController::guiEvent);
+    ofAddListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::buttonEventHandler);
     ofAddListener(ofEvents().draw, this, &ACMidiController::draw);
-    
-    gui->setColorBack(ofColor(255,100));
-    gui->setWidgetColor(OFX_UI_WIDGET_COLOR_BACK, ofColor(255,100));
-    
 }
 
 void ACMidiController::showMidiPorts(){
@@ -69,37 +58,29 @@ void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
 
 void  ACMidiController::draw(ofEventArgs& event){
     
+    midiPortListOpenButton.draw();
+    for (int i = 0; i < portLists.size(); i++) {
+        portListButtons[i]->draw();
+    }
 }
 
-void ACMidiController::guiEvent(ofxUIEventArgs &e)
-{
-    string name = e.widget->getName();
-    int kind = e.widget->getKind();
-    
-    cout << "WIDGET NAME: " << name << endl;
-    
-    if( name == "Open MIDI Ports"){
+void ACMidiController::buttonEventHandler(bool &bPress){
+    if (bPress) {
         portLists.clear();
-        vector<string> p = midiIn.getPortList();
-        //ofLogNotice(ofToString(p.size()));
-        // ???????
-        for (int i = 0 ; i < p.size(); i++){
-            ddl->addToggle(p[i]);
+        portListButtons.clear();
+        portLists = midiIn.getPortList();
+        for (int i = 0; i < portLists.size(); i++) {
+            
+            // How can i create buttons in real time
+            // that can react to mouse event?
+            ACMidiButton button;
+            button.setup(20, 20 + 40*i, portLists[i]);
+            button.setPressedColor(ofColor(255,0,0));
+            button.setReleasedColor(ofColor(255,255,255));
+            portListButtons.push_back(&button);
+            
+
+
         }
     }
-    
-//    if(name == "DDL SHOW ACTIVE ITEM")
-//    {
-//        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-//        ddl->setShowCurrentSelected(toggle->getValue());
-//    }
-//    else if(name == "DYNAMIC DROP DOWN")
-//    {
-//        ofxUIDropDownList *ddlist = (ofxUIDropDownList *) e.widget;
-//        vector<ofxUIWidget *> &selected = ddlist->getSelected();
-//        for(int i = 0; i < selected.size(); i++)
-//        {
-//            cout << "SELECTED: " << selected[i]->getName() << endl;
-//        }
-//    }
 }
