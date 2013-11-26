@@ -24,9 +24,12 @@ public:
     void setPlayerRectSize();
     
     void playAll();
+    
+    void randomizePlayOrder();
 
 private:
     vector<CallMyNamePlayer> callMyNamePlayer;
+    vector<int> playOrder;
     int fileCount;
     ofDirectory fileDirectory;
 //    int counter;

@@ -29,6 +29,9 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
     callMyNamePlayer.reserve(fileCount);
     callMyNamePlayer.clear();
     
+
+
+    
     for (int i = 0 ; i < fileCount ; i++){
         CallMyNamePlayer player;
         callMyNamePlayer.push_back(player);
@@ -36,13 +39,24 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
         
 //        addPlayer(ofFilePath::getAbsolutePath(fileDirectory.getPath(i)));
     }
+    
+    playOrder.reserve(callMyNamePlayer.size());
+    playOrder.clear();
+    
+    for (int i = 0; i < callMyNamePlayer.size(); i++){
+        playOrder.push_back(i);
+    }
+    randomizePlayOrder();
+    
+    ofLogNotice("stop");
 }
 
-void CallMyNameController::addPlayer(string filePath){
-    CallMyNamePlayer player;
-    player.setup(filePath);
-    callMyNamePlayer.push_back(player);
-}
+// this is not working i think it's because you ofSoundPlayer and Vector copy is not working
+//void CallMyNameController::addPlayer(string filePath){
+//    CallMyNamePlayer player;
+//    player.setup(filePath);
+//    callMyNamePlayer.push_back(player);
+//}
 
 void CallMyNameController::draw(){
     for (int i = 0 ; i < callMyNamePlayer.size() ; i++){
@@ -71,7 +85,19 @@ void CallMyNameController::setPlayerRectSize(){
 
 
 void CallMyNameController::playAll(){
+    randomizePlayOrder();
+
     for (int i = 0; i < callMyNamePlayer.size(); i++) {
-        callMyNamePlayer[i].playAfterMs(i*70);
+        callMyNamePlayer[playOrder[i]].playAfterMs(i*70);
     }
 }
+
+void CallMyNameController::randomizePlayOrder(){
+    std::random_shuffle(playOrder.begin(), playOrder.end());
+    ofRandomize(playOrder);
+    for (int i = 0; i < playOrder.size(); i++) {
+        ofLogNotice(ofToString(playOrder[i]));
+    }
+
+}
+

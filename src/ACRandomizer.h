@@ -9,3 +9,12 @@
 #pragma once
 
 #include "ofMain.h"
+
+class ACRandomizer {
+public:
+    ACRandomizer();
+    ~ACRandomizer();
+    
+    void setup(int numOf);
+
+};
