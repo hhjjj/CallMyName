@@ -38,6 +38,7 @@ public:
     void draw();
     
     ofEvent<bool> pressEvent;
+    ofEvent<int> tagEvent;
     
     void mouseMoved(ofMouseEventArgs& event);
     void mouseDragged(ofMouseEventArgs& event);

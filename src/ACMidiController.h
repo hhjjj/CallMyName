@@ -12,6 +12,8 @@
 #include "ofxMidi.h"
 #include "ACMidiButton.h"
 
+#define numOfShowPortList (3)
+
 class ACMidiController: public ofxMidiListener{
 public:
     ACMidiController();
@@ -33,8 +35,10 @@ private:
     void draw(ofEventArgs& event);
     
     ACMidiButton midiPortListOpenButton;
-    vector<ACMidiButton*> portListButtons;
+    ACMidiButton portListButtons [numOfShowPortList];
+//    vector<ACMidiButton*> portListButtons;
     
     void buttonEventHandler(bool &bPress);
+    void portButtonEventHandler(int &tag);
     
 };

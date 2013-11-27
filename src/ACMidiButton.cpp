@@ -147,6 +147,7 @@ void ACMidiButton::mousePressed(ofMouseEventArgs& event){
             bIsPressed = true;
         }
         ofNotifyEvent(pressEvent, bIsPressed);
+        ofNotifyEvent(tagEvent, tagNum);
     }
 }
 

@@ -16,7 +16,9 @@ ACMidiController::~ACMidiController(){
     midiIn.removeListener(this);
     ofRemoveListener(ofEvents().draw, this, &ACMidiController::draw);
     ofRemoveListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::buttonEventHandler);
-
+    for (int i = 0; i < numOfShowPortList; i++) {
+        ofRemoveListener(portListButtons[i].tagEvent, this, &ACMidiController::portButtonEventHandler);
+    }
 }
 
 void ACMidiController::setup() {
@@ -28,6 +30,15 @@ void ACMidiController::setup() {
     midiPortListOpenButton.setup(20, 20, "OPEN MIDI PORTS");
     midiPortListOpenButton.setPressedColor(ofColor(255,0,0));
     midiPortListOpenButton.setReleasedColor(ofColor(255,255,255));
+    
+    
+    for (int i = 0; i < numOfShowPortList; i++) {
+        portListButtons[i].setup(20, 20, "");
+        portListButtons[i].setPressedColor(ofColor(255,0,0));
+        portListButtons[i].setReleasedColor(ofColor(255,255,255));
+        portListButtons[i].setTag(i);
+        ofAddListener(portListButtons[i].tagEvent, this, &ACMidiController::portButtonEventHandler);
+    }
     
     
     midiIn.addListener(this);
@@ -54,33 +65,29 @@ void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
     
 	// make a copy of the latest message
 	midiMessage = msg;
+    
+    ofLogNotice("new message!!");
 }
 
 void  ACMidiController::draw(ofEventArgs& event){
     
     midiPortListOpenButton.draw();
-    for (int i = 0; i < portLists.size(); i++) {
-        portListButtons[i]->draw();
+    for (int i = 0; i < numOfShowPortList; i++) {
+        portListButtons[i].draw();
     }
 }
 
 void ACMidiController::buttonEventHandler(bool &bPress){
     if (bPress) {
-        portLists.clear();
-        portListButtons.clear();
+        
         portLists = midiIn.getPortList();
-        for (int i = 0; i < portLists.size(); i++) {
-            
-            // How can i create buttons in real time
-            // that can react to mouse event?
-            ACMidiButton button;
-            button.setup(20, 20 + 40*i, portLists[i]);
-            button.setPressedColor(ofColor(255,0,0));
-            button.setReleasedColor(ofColor(255,255,255));
-            portListButtons.push_back(&button);
-            
-
-
+        for (int i = 0; i < numOfShowPortList; i++) {
+            portListButtons[i].setTitle(portLists[i]);
+            portListButtons[i].setPosition(20, 30 + 30 +30*i);
         }
     }
+}
+
+void ACMidiController::portButtonEventHandler(int &tag){
+    openPort(portLists[tag]);
 }
