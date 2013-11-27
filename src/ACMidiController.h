@@ -33,8 +33,10 @@ private:
     MidiModeType midiMode;
     
     ofTrueTypeFont font;
+    
     ofxMidiIn midiIn;
 	ofxMidiMessage midiMessage;
+    
     
     vector<string> portLists;
     void draw(ofEventArgs& event);
@@ -48,6 +50,8 @@ private:
     
     void openPortEventHandler(bool &bPress);
     void controlButtonEventHandler(int &tag);
+    void midiTriggerEventHandler(bool &bPress);
+    void midiSetButtonEventHandler(bool &bPress);
     void portButtonEventHandler(int &tag);
     
 };

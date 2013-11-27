@@ -17,6 +17,10 @@ enum MidiModeType{
     MIDI_MODE_EDIT = 1
 };
 
+enum MidiControlType{
+    MIDI_CONTROL_BUTTON = 0,
+    MIDI_CONTROL_KNOB = 1
+};
 
 class ACMidiButton {
     
@@ -24,17 +28,18 @@ public:
     ACMidiButton();
     ~ACMidiButton();
     
-    int channel;
     
-	/// message-specific values,
-	/// converted from raw bytes
-	int pitch;			//< 0 - 127
-	int velocity;		//< 0 - 127
-	int control;		//< 0 - 127
-	int value;			//< depends on message status type
+//    MidiStatus midiStatus;
+//    
+//    int channel;
+//    
+//	/// message-specific values,
+//	/// converted from raw bytes
+//	int pitch;			//< 0 - 127
+//	int velocity;		//< 0 - 127
+//	int control;		//< 0 - 127
+//	int value;			//< depends on message status type
 
-    
-    
     void setup(float x, float y, string title);
     ofRectangle getButtonRect();
     
@@ -51,19 +56,31 @@ public:
     void setMidiMode(MidiModeType type);
     MidiModeType getMidiMode();
     
+    void setMidiControlType(MidiControlType type);
+    MidiControlType getMidiControlType();
+    
+    void setMidiMessage(ofxMidiMessage msg);
+    ofxMidiMessage getMidiMessage();
+    void triggerMidiEvent(ofxMidiMessage msg);
+    
     void setTag(int tag);
     int getTag();
     
     void setPressed(bool bSet);
     bool isPressed();
+    
+    bool isSetMidiPressed();
         
     void drawPressed();
     void drawReleased();
-
+    void drawMidiMessage();
     void draw();
     
     ofEvent<bool> pressEvent;
+    ofEvent<bool> midiTriggerEvent;
+    ofEvent<bool> midiSetPressEvent;
     ofEvent<int> tagEvent;
+    ofEvent<int> knobValueEvent;
     
     void mouseMoved(ofMouseEventArgs& event);
     void mouseDragged(ofMouseEventArgs& event);
@@ -72,14 +89,17 @@ public:
     
 private:
     MidiModeType midiMode;
-    MidiStatus midiStatus;
-
+    MidiControlType midiControlType;
+    ofxMidiMessage midiMsg;
+    
     bool bWasSetup;
     bool bHasFocus;
     bool bIsPressed;
+    bool bIsMidiSetPressed;
     bool bIsDragged;
     bool bToggleButton;
     bool bEnableEvents;
+    bool bEnableMidiSetEvents;
     
     float posX;
     float posY;
@@ -97,7 +117,11 @@ private:
     ofColor midiReleasedColor;
 
     ofTrueTypeFont font;
+    ofTrueTypeFont msgFont;
     float fontSize;
+    float msgFontSize;
     float hMargin;
     float vMargin;
+    
+    string midiStr;
 };

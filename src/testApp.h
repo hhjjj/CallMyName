@@ -11,7 +11,8 @@
 #include "ACMidiController.h"
 
 
-class testApp : public ofBaseApp{
+//class testApp : public ofBaseApp , public ofxMidiListener{
+class testApp : public ofBaseApp {
 
 public:
     void setup();
@@ -30,5 +31,9 @@ public:
     
     CallMyNameController callMyNameController;
     ACMidiController midiController;
+    MidiModeType midiMode;
     
+//    ofxMidiIn midiIn;
+//	ofxMidiMessage midiMessage;
+
 };

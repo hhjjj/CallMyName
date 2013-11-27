@@ -35,7 +35,10 @@ void ACMidiController::setup() {
     playButton.setReleasedColor(ofColor(255,255,255));
     playButton.setToggle(false, false);
     playButton.setTag(0);
+    playButton.setMidiControlType(MIDI_CONTROL_BUTTON);
     ofAddListener(playButton.tagEvent, this, &ACMidiController::controlButtonEventHandler);
+    ofAddListener(playButton.midiSetPressEvent, this, &ACMidiController::midiSetButtonEventHandler);
+    ofAddListener(playButton.midiTriggerEvent, this, &ACMidiController::midiTriggerEventHandler);
     
     midiIn.addListener(this);
     ofAddListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::openPortEventHandler);
@@ -77,21 +80,33 @@ void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
     cout<< "value: " << midiMessage.value << endl;
     
     
-    if (midiMessage.control == 55) {
-        if(midiMessage.value > 64){
-            playButton.setPressed(true);
-            cout << "play" << endl;
-        }
-        else{
-            playButton.setPressed(false);
-            cout << "stop" << endl;
+//    if (midiMessage.control == 55) {
+//        if(midiMessage.value > 64){
+//            playButton.setPressed(true);
+//            cout << "play" << endl;
+//        }
+//        else{
+//            playButton.setPressed(false);
+//            cout << "stop" << endl;
+//        }
+//    }
+
+    if (midiMode == MIDI_MODE_EDIT) {
+        if (playButton.isSetMidiPressed()) {
+            playButton.setMidiMessage(midiMessage);
         }
     }
+    else{
+        playButton.triggerMidiEvent(midiMessage);
+    }
+    
+
 }
 
 void ACMidiController::draw(){
 
     midiPortListOpenButton.draw();
+    playButton.setMidiMode(midiMode);
     playButton.draw();
     if(midiPortListOpenButton.isPressed()){
         for (int i = 0; i < lists.size(); i++) {
@@ -180,3 +195,23 @@ void ACMidiController::controlButtonEventHandler(int &tag){
             break;
     }
 }
+
+void ACMidiController::midiSetButtonEventHandler(bool &bPress){
+    if (bPress) {
+
+        cout << "midi set" << endl;
+    }
+    else{
+        
+    }
+}
+
+void ACMidiController::midiTriggerEventHandler(bool &bPress){
+    if(bPress){
+        cout << "play" << endl;
+    }
+    else{
+        cout << "stop" << endl;
+    }
+}
+

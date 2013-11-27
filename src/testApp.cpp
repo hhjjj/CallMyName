@@ -35,9 +35,16 @@ void testApp::keyPressed(int key){
     if (key == ' '){
         callMyNameController.playAll();
     }
-    else if (key == 'a'){
+    else if (key == 'e'){
 
-
+        if(midiMode == MIDI_MODE_NORMAL){
+            midiMode = MIDI_MODE_EDIT;
+        }else
+        {
+            midiMode = MIDI_MODE_NORMAL;
+        }
+        
+        midiController.setMidiMode(midiMode);
     }
     else if (key =='d'){
 
@@ -92,3 +99,9 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+//void testApp::newMidiMessage(ofxMidiMessage& msg) {
+//    
+//	// make a copy of the latest message
+//	midiMessage = msg;
+//}
