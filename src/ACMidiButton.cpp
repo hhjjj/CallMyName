@@ -49,6 +49,7 @@ void ACMidiButton::setup(float x, float y, string title){
         bWasSetup = true;
 	}
     
+    setMidiMode(MIDI_MODE_NORMAL);
 }
 
 ofRectangle ACMidiButton::getButtonRect(){
@@ -86,6 +87,15 @@ void ACMidiButton::setReleasedColor(ofColor c){
     releasedColor = c;
 }
 
+void ACMidiButton::setMidiMode(MidiModeType type){
+    midiMode = type;
+}
+
+MidiModeType ACMidiButton::getMidiMode(){
+    return midiMode;
+}
+
+
 void ACMidiButton::setTag(int tag){
     tagNum = tag;
 }
@@ -106,12 +116,25 @@ void ACMidiButton::drawPressed(){
     ofSetColor(pressedColor);
     ofFill();
     ofRect(rect);
+    
+    if(midiMode == MIDI_MODE_EDIT){
+        ofSetColor(midiPressedColor);
+        ofFill();
+        ofRect(rect);
+    }
 }
 
 void ACMidiButton::drawReleased(){
     ofSetColor(releasedColor);
     ofNoFill();
     ofRect(rect);
+
+    if(midiMode == MIDI_MODE_EDIT){
+        ofSetColor(midiReleasedColor);
+        ofNoFill();
+        ofRect(rect);
+    }
+    
 }
 
 void ACMidiButton::draw(){

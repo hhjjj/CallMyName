@@ -10,6 +10,13 @@
 
 #include "ofMain.h"
 
+
+enum MidiModeType{
+    MIDI_MODE_NORMAL = 0,
+    MIDI_MODE_EDIT = 1
+};
+
+
 class ACMidiButton {
     
 public:
@@ -25,6 +32,9 @@ public:
     void setToggle(bool bToggle, bool bDefaultVal);
     void setPressedColor(ofColor c);
     void setReleasedColor(ofColor c);
+    
+    void setMidiMode(MidiModeType type);
+    MidiModeType getMidiMode();
     
     void setTag(int tag);
     int getTag();
@@ -47,6 +57,7 @@ public:
     
 private:
     
+    MidiModeType midiMode;
     bool bWasSetup;
     bool bHasFocus;
     bool bIsPressed;
@@ -65,6 +76,8 @@ private:
     
     ofColor pressedColor;
     ofColor releasedColor;
+    ofColor midiPressedColor;
+    ofColor midiReleasedColor;
 
     ofTrueTypeFont font;
     float fontSize;
