@@ -161,11 +161,13 @@ void ACMidiButton::triggerMidiEvent(ofxMidiMessage msg){
                         bIsPressed = false;
                         ofNotifyEvent(midiTriggerEvent, bIsPressed);
                     }
+
+                }
+                else if (midiControlType == MIDI_CONTROL_KNOB){
+                    ofNotifyEvent(knobValueEvent, msg.value);
                 }
             }
-            else if (midiControlType == MIDI_CONTROL_KNOB){
-                ofNotifyEvent(knobValueEvent, msg.value);
-            }
+            
             
             break;
             
@@ -285,7 +287,7 @@ void ACMidiButton::mousePressed(ofMouseEventArgs& event){
             bIsPressed = true;
         }
         if(bEnableEvents){
-            ofNotifyEvent(pressEvent, bIsPressed);
+            ofNotifyEvent(mousePressEvent, bIsPressed);
             ofNotifyEvent(tagEvent, tagNum);
         }
         
@@ -303,7 +305,7 @@ void ACMidiButton::mouseReleased(ofMouseEventArgs& event){
         else{
             bIsPressed = false;
             if(bEnableEvents){
-                ofNotifyEvent(pressEvent, bIsPressed);
+                ofNotifyEvent(mousePressEvent, bIsPressed);
             }
         }
         

@@ -76,7 +76,7 @@ public:
     void drawMidiMessage();
     void draw();
     
-    ofEvent<bool> pressEvent;
+    ofEvent<bool> mousePressEvent;
     ofEvent<bool> midiTriggerEvent;
     ofEvent<bool> midiSetPressEvent;
     ofEvent<int> tagEvent;

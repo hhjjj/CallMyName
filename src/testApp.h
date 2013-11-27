@@ -11,10 +11,11 @@
 #include "ACMidiController.h"
 
 
-//class testApp : public ofBaseApp , public ofxMidiListener{
-class testApp : public ofBaseApp {
+class testApp : public ofBaseApp , public ofxMidiListener{
+//class testApp : public ofBaseApp {
 
 public:
+    ~testApp();
     void setup();
     void update();
     void draw();
@@ -33,7 +34,18 @@ public:
     ACMidiController midiController;
     MidiModeType midiMode;
     
-//    ofxMidiIn midiIn;
-//	ofxMidiMessage midiMessage;
+    ACMidiButton playButton;
+    ACMidiButton testButton;
+
+    
+    ofxMidiIn midiIn;
+	ofxMidiMessage midiMessage;
+    void newMidiMessage(ofxMidiMessage& eventArgs);
+    
+    void midiTriggerEventHandler(bool &bPress);
+    void midiSetButtonEventHandler(bool &bPress);
+    
+    void knobValueEventHandler(int &val);
+
 
 };

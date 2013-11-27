@@ -12,39 +12,41 @@ ACMidiController::ACMidiController(){
 }
 
 ACMidiController::~ACMidiController(){
-    midiIn.closePort();
-    midiIn.removeListener(this);
+    cout<< "midicontroller terminated" << endl;
+//    midiIn->closePort();
+//    midiIn.removeListener(this);
     //ofRemoveListener(ofEvents().draw, this, &ACMidiController::draw);
-    ofRemoveListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::openPortEventHandler);
+    ofRemoveListener(midiPortListOpenButton.mousePressEvent, this, &ACMidiController::openPortEventHandler);
+//    for ( int i = 0; i < midiControlItem.size();i++){
+//        ofRemoveListener(midiControlItem[i]->tagEvent, this, &ACMidiController::midiControlTagEventHandler);
+//    }
 
 }
 
-void ACMidiController::setup() {
+void ACMidiController::setup(ofxMidiIn *midi) {
     
+    midiIn = midi;
     font.loadFont("NewMedia Fett.ttf", 29);
     
-    midiIn.ignoreTypes(true, true, true);
+    midiIn->ignoreTypes(true, true, true);
     
     midiPortListOpenButton.setup(20, 20, "OPEN MIDI PORTS");
     midiPortListOpenButton.setPressedColor(ofColor(255,0,0));
     midiPortListOpenButton.setReleasedColor(ofColor(255,255,255));
     midiPortListOpenButton.setToggle(true, false);
     
-    playButton.setup(300, 20, "PLAY");
-    playButton.setPressedColor(ofColor(255,0,0));
-    playButton.setReleasedColor(ofColor(255,255,255));
-    playButton.setToggle(false, false);
-    playButton.setTag(0);
-    playButton.setMidiControlType(MIDI_CONTROL_BUTTON);
-    ofAddListener(playButton.tagEvent, this, &ACMidiController::controlButtonEventHandler);
-    ofAddListener(playButton.midiSetPressEvent, this, &ACMidiController::midiSetButtonEventHandler);
-    ofAddListener(playButton.midiTriggerEvent, this, &ACMidiController::midiTriggerEventHandler);
+
     
-    midiIn.addListener(this);
-    ofAddListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::openPortEventHandler);
+//    midiIn.addListener(this);
+    ofAddListener(midiPortListOpenButton.mousePressEvent, this, &ACMidiController::openPortEventHandler);
     //ofAddListener(ofEvents().draw, this, &ACMidiController::draw);
     
     midiMode = MIDI_MODE_NORMAL;
+}
+
+void ACMidiController::addMidiControl(ACMidiButton* midiControl){
+//    ofAddListener(midiControl->tagEvent, this, &ACMidiController::midiControlTagEventHandler);
+    midiControlItem.push_back(midiControl);
 }
 
 void ACMidiController::setMidiMode(MidiModeType type){
@@ -53,61 +55,67 @@ void ACMidiController::setMidiMode(MidiModeType type){
 
 
 void ACMidiController::showMidiPorts(){
-    vector<string> ports = midiIn.getPortList();
+    vector<string> ports = midiIn->getPortList();
     
 }
 
 
 
 void ACMidiController::openPort(string deviceName){
-    midiIn.openPort(deviceName);
+    midiIn->openPort(deviceName);
 }
 
 void ACMidiController::closePorts(){
-    midiIn.closePort();
+    midiIn->closePort();
 }
 
-void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
-    
-	// make a copy of the latest message
-	midiMessage = msg;
-    
-    cout<< "status: " << ofxMidiMessage::getStatusString(midiMessage.status) << endl;
-    cout<< "channel: " << midiMessage.channel << endl;
-    cout<< "pitch: " << midiMessage.pitch << endl;
-    cout<< "velocity: " << midiMessage.velocity << endl;
-    cout<< "control: " << midiMessage.control << endl;
-    cout<< "value: " << midiMessage.value << endl;
-    
-    
-//    if (midiMessage.control == 55) {
-//        if(midiMessage.value > 64){
-//            playButton.setPressed(true);
-//            cout << "play" << endl;
-//        }
-//        else{
-//            playButton.setPressed(false);
-//            cout << "stop" << endl;
-//        }
-//    }
-
-    if (midiMode == MIDI_MODE_EDIT) {
-        if (playButton.isSetMidiPressed()) {
-            playButton.setMidiMessage(midiMessage);
-        }
-    }
-    else{
-        playButton.triggerMidiEvent(midiMessage);
-    }
-    
-
-}
+//void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
+//    
+//	// make a copy of the latest message
+//	midiMessage = msg;
+//    
+////    cout<< "status: " << ofxMidiMessage::getStatusString(midiMessage.status) << endl;
+////    cout<< "channel: " << midiMessage.channel << endl;
+////    cout<< "pitch: " << midiMessage.pitch << endl;
+////    cout<< "velocity: " << midiMessage.velocity << endl;
+////    cout<< "control: " << midiMessage.control << endl;
+////    cout<< "value: " << midiMessage.value << endl;
+//    
+//    
+////    if (midiMessage.control == 55) {
+////        if(midiMessage.value > 64){
+////            playButton.setPressed(true);
+////            cout << "play" << endl;
+////        }
+////        else{
+////            playButton.setPressed(false);
+////            cout << "stop" << endl;
+////        }
+////    }
+//
+////    if (midiMode == MIDI_MODE_EDIT) {
+////        if (playButton.isSetMidiPressed()) {
+////            playButton.setMidiMessage(midiMessage);
+////        }
+////    }
+////    else{
+////        playButton.triggerMidiEvent(midiMessage);
+////    }
+//    
+//
+//}
 
 void ACMidiController::draw(){
 
     midiPortListOpenButton.draw();
-    playButton.setMidiMode(midiMode);
-    playButton.draw();
+//    playButton.setMidiMode(midiMode);
+//    playButton.draw();
+    
+    for (int i = 0 ; i < midiControlItem.size(); i ++){
+        midiControlItem[i]->setMidiMode(midiMode);
+        midiControlItem[i]->draw();
+    }
+    
     if(midiPortListOpenButton.isPressed()){
         for (int i = 0; i < lists.size(); i++) {
 
@@ -123,7 +131,7 @@ void ACMidiController::draw(){
 void ACMidiController::openPortEventHandler(bool &bPress){
     if (bPress) {
         cout << "open midi ports" << endl;
-        portLists = midiIn.getPortList();
+        portLists = midiIn->getPortList();
         cout<< "set size: " << portLists.size() << endl;
         for (int i = 0; i < portLists.size(); i++) {
 
@@ -174,7 +182,7 @@ void ACMidiController::portButtonEventHandler(int &tag){
     }
     else{
         cout << "port closed" <<endl;
-        midiIn.closePort();
+        midiIn->closePort();
     }
 
     for (int i = 0; i < lists.size(); i++) {
@@ -185,33 +193,37 @@ void ACMidiController::portButtonEventHandler(int &tag){
     }
 }
 
-void ACMidiController::controlButtonEventHandler(int &tag){
-    switch (tag) {
-        case 0:
-            cout << "play" << endl;
-            break;
-            
-        default:
-            break;
-    }
-}
+//void ACMidiController::controlButtonEventHandler(int &tag){
+//    switch (tag) {
+//        case 0:
+//            cout << "play" << endl;
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//}
+//
+//void ACMidiController::midiSetButtonEventHandler(bool &bPress){
+//    if (bPress) {
+//
+//        cout << "midi set" << endl;
+//    }
+//    else{
+//        
+//    }
+//}
+//
+//void ACMidiController::midiTriggerEventHandler(bool &bPress){
+//    if(bPress){
+//        cout << "play" << endl;
+//    }
+//    else{
+//        cout << "stop" << endl;
+//    }
+//}
 
-void ACMidiController::midiSetButtonEventHandler(bool &bPress){
-    if (bPress) {
-
-        cout << "midi set" << endl;
-    }
-    else{
-        
-    }
-}
-
-void ACMidiController::midiTriggerEventHandler(bool &bPress){
-    if(bPress){
-        cout << "play" << endl;
-    }
-    else{
-        cout << "stop" << endl;
-    }
+void ACMidiController::midiControlTagEventHandler(int &tag){
+    cout<< tag << endl;
 }
 
