@@ -23,14 +23,15 @@ ACMidiController::~ACMidiController(){
 
 }
 
-void ACMidiController::setup(ofxMidiIn *midi) {
-    
+void ACMidiController::setup(float x, float y, ofxMidiIn *midi) {
+    posX = x;
+    posY = y;
     midiIn = midi;
-    font.loadFont("NewMedia Fett.ttf", 29);
+    font.loadFont("NewMedia Fett.ttf", 18);
     
     midiIn->ignoreTypes(true, true, true);
     
-    midiPortListOpenButton.setup(20, 20, "OPEN MIDI PORTS");
+    midiPortListOpenButton.setup(posX, posY, "OPEN MIDI PORTS");
     midiPortListOpenButton.setPressedColor(ofColor(255,0,0));
     midiPortListOpenButton.setReleasedColor(ofColor(255,255,255));
     midiPortListOpenButton.setToggle(true, false);
@@ -40,8 +41,7 @@ void ACMidiController::setup(ofxMidiIn *midi) {
 //    midiIn.addListener(this);
     ofAddListener(midiPortListOpenButton.mousePressEvent, this, &ACMidiController::openPortEventHandler);
     //ofAddListener(ofEvents().draw, this, &ACMidiController::draw);
-    
-    midiMode = MIDI_MODE_NORMAL;
+    setMidiMode(MIDI_MODE_NORMAL);
 }
 
 void ACMidiController::addMidiControl(ACMidiButton* midiControl){
@@ -123,7 +123,9 @@ void ACMidiController::draw(){
         }
     }
 }
-
+string ACMidiController::getCurrentMidiPort(){
+    return midiIn->getName();
+}
 //void  ACMidiController::draw(ofEventArgs& event){
 //
 //}
@@ -151,7 +153,7 @@ void ACMidiController::openPortEventHandler(bool &bPress){
             
             lists.push_back(new ACMidiButton());
             
-            lists[i]->setup(20, 30+30+30*i, portLists[i]);
+            lists[i]->setup(posX, posY+30+30*i, portLists[i]);
             lists[i]->setTitle(portLists[i]);
             lists[i]->setPressedColor(ofColor(255,0,0));
             lists[i]->setReleasedColor(ofColor(255,255,255));

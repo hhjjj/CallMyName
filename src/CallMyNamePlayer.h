@@ -23,6 +23,7 @@ public:
     void setup(string filename);
     void setVolume(float vol);
     void play();
+    void stop();
     void playAfterMs(int ms);
     void draw();
     void setRect(float x, float y, float w, float h, ofColor c);

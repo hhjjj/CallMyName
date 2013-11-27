@@ -19,7 +19,7 @@ public:
     ACMidiController();
     ~ACMidiController();
     
-    void setup(ofxMidiIn* midi);
+    void setup(float x, float y, ofxMidiIn* midi);
     void draw();
     
     void setMidiMode(MidiModeType type);
@@ -31,7 +31,10 @@ public:
     
     void addMidiControl(ACMidiButton* midiControl);
     void midiControlTagEventHandler(int &tag);
+    string getCurrentMidiPort();
 private:
+    float posX;
+    float posY;
     MidiStatus midiStatus;
     MidiModeType midiMode;
     

@@ -32,7 +32,10 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
     callMyNamePlayer.reserve(fileCount);
     callMyNamePlayer.clear();
     
-
+    playMany = 1;
+    playDelay = 70;
+    playCount = 0;
+    bSwingOn = false;
 
     
     for (int i = 0 ; i < fileCount ; i++){
@@ -49,6 +52,9 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
     for (int i = 0; i < callMyNamePlayer.size(); i++){
         playOrder.push_back(i);
     }
+    
+    // Do Not Shuffle in the beginning
+    // Fuck it Just Shuffle it
     shufflePlayOrder();
     
     ofLogNotice("stop");
@@ -68,6 +74,7 @@ void CallMyNameController::draw(){
 }
 
 void CallMyNameController::setPlayerRectSize(){
+    float menuMargin = 60;
     int numOfCol = 10;
     int numOfRow = (int)ceil((float)callMyNamePlayer.size() / (float)numOfCol);
     ofLogNotice("real row");
@@ -77,7 +84,7 @@ void CallMyNameController::setPlayerRectSize(){
     float hMargin = 10;
     float vMargin = 10;
     float w = (ofGetWidth()- (numOfCol + 2) * hMargin) / (numOfCol);
-    float h = (ofGetHeight()- (numOfRow + 2) * vMargin) / (numOfRow);
+    float h = (ofGetHeight()-menuMargin- (numOfRow + 2) * vMargin) / (numOfRow);
 
     
     
@@ -98,7 +105,7 @@ void CallMyNameController::setPlayerRectSize(){
     for (int i  = 0; i < numOfRow; i++) {
         for ( int j = 0; j < numOfCol; j++){
             
-            callMyNamePlayer[i *numOfCol + j].setRect(hMargin*(j+1) + j*w, vMargin*(i+1) + i*h, w, h, ofColor(255, 0 , 0));
+            callMyNamePlayer[i *numOfCol + j].setRect(hMargin*(j+1) + j*w, vMargin*(i+1) + i*h + menuMargin, w, h, ofColor(255, 0 , 0));
             
         }
     }
@@ -112,12 +119,55 @@ void CallMyNameController::setPlayerRectSize(){
     }
 }
 
+void CallMyNameController::play(){
+
+    for (int i = 0; i < playMany; i++) {
+        int randomDelay;
+        if (bSwingOn) {
+            randomDelay = (int)ofRandom(70, playDelay);
+            cout << "random delay: " << randomDelay << endl;
+
+        }
+        else{
+            randomDelay = playDelay;
+        }
+        
+        if (playCount > callMyNamePlayer.size()-1){
+            playCount = 0;
+            shufflePlayOrder();
+        }
+
+        cout<< "playCount: " << playCount << endl;
+        callMyNamePlayer[playOrder[playCount]].playAfterMs((i+1)*randomDelay);
+        playCount++;
+    }
+//    playCount += playMany;
+    
+
+    
+
+}
 
 void CallMyNameController::playAll(){
     shufflePlayOrder();
 
     for (int i = 0; i < callMyNamePlayer.size(); i++) {
-        callMyNamePlayer[playOrder[i]].playAfterMs(i*70);
+        int randomDelay;
+        if (bSwingOn) {
+            randomDelay = (int)ofRandom(70, playDelay);
+            cout << "random delay: " << randomDelay << endl;
+        }else
+        {
+            randomDelay = playDelay;
+        }
+        
+        callMyNamePlayer[playOrder[i]].playAfterMs((i+1)*randomDelay);
+    }
+}
+
+void CallMyNameController::stopAll(){
+    for (int i = 0; i < callMyNamePlayer.size(); i++) {
+        callMyNamePlayer[i].stop();
     }
 }
 
@@ -127,6 +177,23 @@ void CallMyNameController::shufflePlayOrder(){
 //    for (int i = 0; i < playOrder.size(); i++) {
 //        ofLogNotice(ofToString(playOrder[i]));
 //    }
-
+    cout<< "Shuffle!!" <<endl;
 }
 
+int CallMyNameController::getFileCount(){
+    return callMyNamePlayer.size();
+}
+
+
+void CallMyNameController::setPlayMany(int num){
+    playMany = num;
+    cout << "머야:" << playMany << endl;
+}
+
+void CallMyNameController::setPlayDelay(int ms){
+    playDelay = ms;
+}
+
+void CallMyNameController::setSwingOn(bool bSet){
+    bSwingOn = bSet;
+}

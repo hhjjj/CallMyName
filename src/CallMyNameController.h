@@ -24,11 +24,22 @@ public:
     void setPlayerRectSize();
     
     void playAll();
-    
+    void play();
+    void stopAll();
     void shufflePlayOrder();
+    int getFileCount();
+    
+    void setPlayMany(int num);
+    
+    void setPlayDelay(int ms);
+    void setSwingOn(bool bSet);
 
 private:
     vector<CallMyNamePlayer> callMyNamePlayer;
+    int playDelay;
+    int playMany;
+    int playCount;
+    bool bSwingOn;
     vector<int> playOrder;
     int fileCount;
     ofDirectory fileDirectory;

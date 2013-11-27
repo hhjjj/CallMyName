@@ -78,6 +78,12 @@ void CallMyNamePlayer::play(ofEventArgs &e){
     play();
 }
 
+void CallMyNamePlayer::stop(){
+    timer.pauseTimer();
+    player.stop();
+    player.setPosition(0);
+}
+
 void CallMyNamePlayer::playAfterMs(int ms){
     if (player.getIsPlaying()) {
 

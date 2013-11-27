@@ -35,17 +35,25 @@ public:
     MidiModeType midiMode;
     
     ACMidiButton playButton;
+    ACMidiButton stopAllButton;
+    ACMidiButton swingOnButton;
 
     ACMidiSlider playNumSlider;
+    ACMidiSlider delaySlider;
     
     ofxMidiIn midiIn;
 	ofxMidiMessage midiMessage;
     void newMidiMessage(ofxMidiMessage& eventArgs);
     
     void playButtonEventHandler(bool &bPress);
+    void stopAllButtonEventHandler(bool &bPress);
+    void swingOnButtonEventHandler(bool &bPress);
     
     void delayValueEventHandler(int &val);
     void playNumEventHandler(int &val);
-
-
+    
+    ofTrueTypeFont menuFont;
+    int playMany;
+    int playDelay;
+    
 };

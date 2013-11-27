@@ -59,7 +59,7 @@ void ACMidiButton::setup(float x, float y, string title){
         bWasSetup = true;
 	}
     
-    midiPressedColor = ofColor(0,0,255,255);
+    midiPressedColor = ofColor(255);
     midiReleasedColor = ofColor(0,0,255,150);
     setMidiMode(MIDI_MODE_NORMAL);
 }
@@ -200,7 +200,7 @@ void ACMidiButton::drawReleased(){
 }
 
 void ACMidiButton::drawMidiMessage(){
-    ofSetColor(255, 0, 0);
+    ofSetColor(255);
     switch (midiMsg.status) {
         case MIDI_NOTE_ON:
             midiStr = ofToString(midiMsg.channel)+"/NO/"+ofToString(midiMsg.pitch);
@@ -229,17 +229,16 @@ void ACMidiButton::draw(){
     
     if(midiMode == MIDI_MODE_EDIT){
 
+        ofSetColor(midiReleasedColor);
+        ofFill();
+        ofRect(ofRectangle(rect.x + hMargin, rect.y + vMargin, rect.width - hMargin*2, rect.height - vMargin*2));
+        drawMidiMessage();
+        
         if (bIsMidiSetPressed) {
             ofSetColor(midiPressedColor);
-            ofFill();
-            ofRect(rect);
-            drawMidiMessage();
-        }
-        else{
-            ofSetColor(midiReleasedColor);
-            ofFill();
-            ofRect(rect);
-
+            ofNoFill();
+            ofRect(ofRectangle(rect.x + hMargin, rect.y + vMargin, rect.width - hMargin*2, rect.height - vMargin*2));
+            
         }
         
         
