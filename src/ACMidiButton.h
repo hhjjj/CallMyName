@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxMidi.h"
 
 
 enum MidiModeType{
@@ -22,6 +23,18 @@ class ACMidiButton {
 public:
     ACMidiButton();
     ~ACMidiButton();
+    
+    int channel;
+    
+	/// message-specific values,
+	/// converted from raw bytes
+	int pitch;			//< 0 - 127
+	int velocity;		//< 0 - 127
+	int control;		//< 0 - 127
+	int value;			//< depends on message status type
+
+    
+    
     void setup(float x, float y, string title);
     ofRectangle getButtonRect();
     
@@ -32,6 +45,8 @@ public:
     void setToggle(bool bToggle, bool bDefaultVal);
     void setPressedColor(ofColor c);
     void setReleasedColor(ofColor c);
+    
+    void enableEvents(bool bSet);
     
     void setMidiMode(MidiModeType type);
     MidiModeType getMidiMode();
@@ -56,13 +71,15 @@ public:
     void mouseReleased(ofMouseEventArgs& event);
     
 private:
-    
     MidiModeType midiMode;
+    MidiStatus midiStatus;
+
     bool bWasSetup;
     bool bHasFocus;
     bool bIsPressed;
     bool bIsDragged;
     bool bToggleButton;
+    bool bEnableEvents;
     
     float posX;
     float posY;

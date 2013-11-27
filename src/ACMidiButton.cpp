@@ -17,6 +17,7 @@ ACMidiButton::~ACMidiButton(){
         ofUnregisterMouseEvents(this);
     }
 	bWasSetup = false;
+    
 }
 
 void ACMidiButton::setup(float x, float y, string title){
@@ -25,6 +26,7 @@ void ACMidiButton::setup(float x, float y, string title){
     bIsPressed = false;
     bIsDragged = false;
     bToggleButton = false;
+    bEnableEvents = true;
 
     buttonTitle = title;
     
@@ -49,6 +51,8 @@ void ACMidiButton::setup(float x, float y, string title){
         bWasSetup = true;
 	}
     
+    midiPressedColor = ofColor(0,0,255,255);
+    midiReleasedColor = ofColor(0,0,255,150);
     setMidiMode(MIDI_MODE_NORMAL);
 }
 
@@ -131,22 +135,23 @@ void ACMidiButton::drawReleased(){
 
     if(midiMode == MIDI_MODE_EDIT){
         ofSetColor(midiReleasedColor);
-        ofNoFill();
+        ofFill();
         ofRect(rect);
     }
     
 }
 
 void ACMidiButton::draw(){
-    
     if (bIsPressed) {
         drawPressed();
     }
-    
-    drawReleased();
     ofSetColor(255);
     font.drawString(buttonTitle, posX+hMargin, posY + bBox.height +vMargin);
-    
+    drawReleased();
+}
+
+void ACMidiButton::enableEvents(bool bSet){
+    bEnableEvents = bSet;
 }
 
 void ACMidiButton::mouseMoved(ofMouseEventArgs& event){
@@ -169,8 +174,10 @@ void ACMidiButton::mousePressed(ofMouseEventArgs& event){
         else{
             bIsPressed = true;
         }
-        ofNotifyEvent(pressEvent, bIsPressed);
-        ofNotifyEvent(tagEvent, tagNum);
+        if(bEnableEvents){
+            ofNotifyEvent(pressEvent, bIsPressed);
+            ofNotifyEvent(tagEvent, tagNum);
+        }
     }
 }
 

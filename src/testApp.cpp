@@ -26,6 +26,7 @@ void testApp::draw(){
     ofBackground(0);
 
     callMyNameController.draw();
+    midiController.draw();
 }
 
 //--------------------------------------------------------------
