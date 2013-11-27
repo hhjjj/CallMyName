@@ -1,53 +1,37 @@
 //
-//  ACMidiButton.h
+//  ACMidiSlider.h
 //  CallMyName
 //
-//  Created by songhojun on 11/27/13.
+//  Created by hojun on 11/28/13.
 //
 //
 
 #pragma once
 
 #include "ofMain.h"
-#include "ofxMidi.h"
-
-
-enum MidiModeType{
-    MIDI_MODE_NORMAL = 0,
-    MIDI_MODE_EDIT = 1
-};
+#include "ACMidiController.h"
 
 
 
 
-class ACMidiButton {
+class ACMidiSlider {
     
 public:
-    ACMidiButton();
-    ~ACMidiButton();
+    ACMidiSlider();
+    ~ACMidiSlider();
     
     
-//    MidiStatus midiStatus;
-//    
-//    int channel;
-//    
-//	/// message-specific values,
-//	/// converted from raw bytes
-//	int pitch;			//< 0 - 127
-//	int velocity;		//< 0 - 127
-//	int control;		//< 0 - 127
-//	int value;			//< depends on message status type
-
     void setup(float x, float y, string title);
-    ofRectangle getButtonRect();
+    ofRectangle getRect();
     
     void setTitle(string title);
     string getTitle();
-
+    
     void setPosition(float x, float y);
-    void setToggle(bool bToggle, bool bDefaultVal);
-    void setPressedColor(ofColor c);
-    void setReleasedColor(ofColor c);
+    void setSize(float w);
+
+    void setSliderColor(ofColor c);
+    void setBarColor(ofColor c);
     
     void enableEvents(bool bSet);
     
@@ -62,22 +46,17 @@ public:
     void setTag(int tag);
     int getTag();
     
-    void setPressed(bool bSet);
-    bool isPressed();
     
     bool isSetMidiPressed();
-        
-    void drawPressed();
-    void drawReleased();
+    
+    
     void drawMidiMessage();
     void draw();
     
-    ofEvent<bool> mousePressEvent;
-    ofEvent<bool> midiTriggerEvent;
     ofEvent<bool> midiSetPressEvent;
     ofEvent<int> tagEvent;
     ofEvent<int> knobValueEvent;
-    
+    void updateBarPos(float x, float y);
     void mouseMoved(ofMouseEventArgs& event);
     void mouseDragged(ofMouseEventArgs& event);
     void mousePressed(ofMouseEventArgs& event);
@@ -89,16 +68,26 @@ private:
     
     bool bWasSetup;
     bool bHasFocus;
-    bool bIsPressed;
     bool bIsMidiSetPressed;
     bool bIsDragged;
-    bool bToggleButton;
     bool bEnableEvents;
     bool bEnableMidiSetEvents;
     
+    float dragX;
+    float dragY;
+    
+    float mouseX;
+    float mouseY;
+    float startMouseX;
+    float startMouseY;
+    
+    float sliderVal;
+    
+    
+    
     float posX;
     float posY;
-
+    
     
     string buttonTitle;
     ofRectangle rect;
@@ -106,11 +95,12 @@ private:
     
     int tagNum;
     
-    ofColor pressedColor;
-    ofColor releasedColor;
+    ofColor sliderColor;
+    ofColor barColor;
+
     ofColor midiPressedColor;
     ofColor midiReleasedColor;
-
+    
     ofTrueTypeFont font;
     ofTrueTypeFont msgFont;
     float fontSize;
@@ -120,3 +110,4 @@ private:
     
     string midiStr;
 };
+

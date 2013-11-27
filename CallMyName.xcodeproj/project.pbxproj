@@ -71,6 +71,7 @@
 		F11F40A01844CD5E00587F31 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F11F409B1844CD5E00587F31 /* ofxXmlSettings.cpp */; };
 		F19F46E61844570400573CEC /* ACRandomizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F19F46E41844570400573CEC /* ACRandomizer.cpp */; };
 		F19F46E91844571300573CEC /* CallMyNameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F19F46E71844571300573CEC /* CallMyNameController.cpp */; };
+		F1AA8845184682460024AFA0 /* ACMidiSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1AA8843184682460024AFA0 /* ACMidiSlider.cpp */; };
 		F1C4C7EC1842171A00A988E5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C4C7EB1842171A00A988E5 /* AVFoundation.framework */; };
 		F1DCF0EB18407E680045D90E /* CallMyNamePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1DCF0E918407E680045D90E /* CallMyNamePlayer.cpp */; };
 		F1DCF2F01840AA920045D90E /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DCF2EF1840AA920045D90E /* AudioUnit.framework */; };
@@ -239,6 +240,8 @@
 		F19F46E51844570400573CEC /* ACRandomizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRandomizer.h; sourceTree = "<group>"; };
 		F19F46E71844571300573CEC /* CallMyNameController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallMyNameController.cpp; sourceTree = "<group>"; };
 		F19F46E81844571300573CEC /* CallMyNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMyNameController.h; sourceTree = "<group>"; };
+		F1AA8843184682460024AFA0 /* ACMidiSlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACMidiSlider.cpp; sourceTree = "<group>"; };
+		F1AA8844184682460024AFA0 /* ACMidiSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMidiSlider.h; sourceTree = "<group>"; };
 		F1C4C7EB1842171A00A988E5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F1C4C7F71842219200A988E5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		F1DCF0E918407E680045D90E /* CallMyNamePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallMyNamePlayer.cpp; sourceTree = "<group>"; };
@@ -675,6 +678,8 @@
 				F11F3D6B1844C1FC00587F31 /* ACMidiController.h */,
 				6747705C18450FE70082A6AC /* ACMidiButton.cpp */,
 				6747705D18450FE70082A6AC /* ACMidiButton.h */,
+				F1AA8843184682460024AFA0 /* ACMidiSlider.cpp */,
+				F1AA8844184682460024AFA0 /* ACMidiSlider.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -882,6 +887,7 @@
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				F11F40A01844CD5E00587F31 /* ofxXmlSettings.cpp in Sources */,
+				F1AA8845184682460024AFA0 /* ACMidiSlider.cpp in Sources */,
 				A29D8C96AE042ECEAA1BD4F3 /* NetworkingUtilsWin.cpp in Sources */,
 				28090DEB5109115003E8F1C5 /* UdpSocketWin.cpp in Sources */,
 				F19F46E91844571300573CEC /* CallMyNameController.cpp in Sources */,

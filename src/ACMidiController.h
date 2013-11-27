@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include "ofxMidi.h"
 #include "ACMidiButton.h"
+#include "ACMidiSlider.h"
 
 
 class ACMidiController{

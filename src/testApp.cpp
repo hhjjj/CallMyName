@@ -19,28 +19,15 @@ void testApp::setup(){
     playButton.setPressedColor(ofColor(255,0,0));
     playButton.setReleasedColor(ofColor(255,255,255));
     playButton.setToggle(false, false);
-    playButton.setTag(0);
-    playButton.setMidiControlType(MIDI_CONTROL_BUTTON);
-    ofAddListener(playButton.mousePressEvent, this, &testApp::midiTriggerEventHandler);
-    ofAddListener(playButton.midiTriggerEvent, this, &testApp::midiTriggerEventHandler);
-    ofAddListener(playButton.midiSetPressEvent, this, &testApp::midiSetButtonEventHandler);
-    ofAddListener(playButton.tagEvent, &midiController, &ACMidiController::midiControlTagEventHandler);
-
+    ofAddListener(playButton.mousePressEvent, this, &testApp::playButtonEventHandler);
+    ofAddListener(playButton.midiTriggerEvent, this, &testApp::playButtonEventHandler);
 
     
-    
-    testButton.setup(500, 20, "KNOB");
-    testButton.setPressedColor(ofColor(255,0,0));
-    testButton.setReleasedColor(ofColor(255,255,255));
-    testButton.setToggle(false, false);
-    testButton.setTag(1);
-    testButton.setMidiControlType(MIDI_CONTROL_KNOB);
-    ofAddListener(testButton.knobValueEvent, this, &testApp::knobValueEventHandler);
-    
-    
-    midiController.addMidiControl(&playButton);
-    midiController.addMidiControl(&testButton);
-    
+    playNumSlider.setup(300, 50, "PLAY NUM");
+    playNumSlider.setSize(200);
+    playNumSlider.setSliderColor(ofColor(255,255,255));
+    playNumSlider.setBarColor(ofColor(255,0,0));
+    ofAddListener(playNumSlider.knobValueEvent, this, &testApp::playNumEventHandler);
 
     callMyNameController.setup("names/","wav");
     callMyNameController.setPlayerRectSize();
@@ -61,6 +48,12 @@ void testApp::draw(){
 
     callMyNameController.draw();
     midiController.draw();
+    
+    playButton.setMidiMode(midiMode);
+    playButton.draw();
+    
+    playNumSlider.setMidiMode(midiMode);
+    playNumSlider.draw();
 }
 
 //--------------------------------------------------------------
@@ -151,30 +144,21 @@ void testApp::newMidiMessage(ofxMidiMessage& msg) {
             playButton.setMidiMessage(midiMessage);
         }
         
-        if (testButton.isSetMidiPressed()) {
-            testButton.setMidiMessage(midiMessage);
+
+        if (playNumSlider.isSetMidiPressed()) {
+            playNumSlider.setMidiMessage(midiMessage);
         }
     }
     else{
         playButton.triggerMidiEvent(midiMessage);
-        testButton.triggerMidiEvent(midiMessage);
+        playNumSlider.triggerMidiEvent(midiMessage);
+
     }
 
 }
 
 
-
-void testApp::midiSetButtonEventHandler(bool &bPress){
-    if (bPress) {
-        
-        cout << "midi set" << endl;
-    }
-    else{
-        
-    }
-}
-
-void testApp::midiTriggerEventHandler(bool &bPress){
+void testApp::playButtonEventHandler(bool &bPress){
     if(bPress){
         cout << "play" << endl;
     }
@@ -183,9 +167,10 @@ void testApp::midiTriggerEventHandler(bool &bPress){
     }
 }
 
-void testApp::knobValueEventHandler(int &val){
+void testApp::delayValueEventHandler(int &val){
     cout << val << endl;
-    testButton.setTitle(ofToString(val));
 }
 
-
+void testApp::playNumEventHandler(int &val){
+    cout << val << endl;
+}

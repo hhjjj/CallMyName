@@ -1,18 +1,18 @@
 //
-//  ACMidiButton.cpp
+//  ACMidiSlider.cpp
 //  CallMyName
 //
-//  Created by songhojun on 11/27/13.
+//  Created by hojun on 11/28/13.
 //
 //
 
-#include "ACMidiButton.h"
+#include "ACMidiSlider.h"
 
-ACMidiButton::ACMidiButton(){
+ACMidiSlider::ACMidiSlider(){
     
 }
 
-ACMidiButton::~ACMidiButton(){
+ACMidiSlider::~ACMidiSlider(){
     if(bWasSetup){
         ofUnregisterMouseEvents(this);
     }
@@ -20,18 +20,27 @@ ACMidiButton::~ACMidiButton(){
     
 }
 
-void ACMidiButton::setup(float x, float y, string title){
+void ACMidiSlider::setup(float x, float y, string title){
     bWasSetup = false;
     bHasFocus = false;
-    bIsPressed = false;
     bIsMidiSetPressed = false;
     bIsDragged = false;
-    bToggleButton = false;
     bEnableEvents = true;
     bEnableMidiSetEvents = false;
     
+    
+    mouseX = -1000.0;
+    mouseY = -1000.0;
+    startMouseX = -1000;
+    startMouseY = -1000;
+    
+    
+    dragX = 0.0;
+    dragY = 0.0;
+    
+    
     midiStr = "";
-
+    
     buttonTitle = title;
     
     tagNum = 0;
@@ -44,7 +53,8 @@ void ACMidiButton::setup(float x, float y, string title){
     
     posX = x;
     posY = y;
-
+    
+    sliderVal = 0.0;
     bBox = font.getStringBoundingBox(buttonTitle, posX, posY);
     
     hMargin = fontSize/4.0;
@@ -64,42 +74,46 @@ void ACMidiButton::setup(float x, float y, string title){
     setMidiMode(MIDI_MODE_NORMAL);
 }
 
-ofRectangle ACMidiButton::getButtonRect(){
+
+ofRectangle ACMidiSlider::getRect(){
     return rect;
 }
 
-void ACMidiButton::setTitle(string title){
-    buttonTitle = title;
-    bBox = font.getStringBoundingBox(buttonTitle, posX, posY);
-    rect = ofRectangle(posX, posY, bBox.width+hMargin *2, bBox.height + vMargin * 2);
+void ACMidiSlider::setSliderColor(ofColor c){
+    sliderColor = c;
 }
 
-string ACMidiButton::getTitle(){
+void ACMidiSlider::setBarColor(ofColor c){
+    barColor = c;
+}
+
+void ACMidiSlider::setTitle(string title){
+    buttonTitle = title;
+//    bBox = font.getStringBoundingBox(buttonTitle, posX, posY);
+//    rect = ofRectangle(posX, posY, bBox.width+hMargin *2, bBox.height + vMargin * 2);
+}
+
+string ACMidiSlider::getTitle(){
     return buttonTitle;
 }
 
-void ACMidiButton::setPosition(float x, float y){
+void ACMidiSlider::setPosition(float x, float y){
     posX = x;
     posY = y;
     bBox = font.getStringBoundingBox(buttonTitle, posX, posY);
     rect = ofRectangle(posX, posY, bBox.width+hMargin *2, bBox.height + vMargin * 2);
 }
 
-
-void ACMidiButton::setToggle(bool bToggle, bool bDefaultVal){
-    bToggleButton = bToggle;
-    bIsPressed = bDefaultVal;
+void ACMidiSlider::setSize(float w){
+    
+    bBox = font.getStringBoundingBox(buttonTitle, posX, posY);
+    rect = ofRectangle(posX, posY, w+hMargin *2, bBox.height + vMargin * 2);
 }
 
-void ACMidiButton::setPressedColor(ofColor c){
-    pressedColor = c;
-}
 
-void ACMidiButton::setReleasedColor(ofColor c){
-    releasedColor = c;
-}
 
-void ACMidiButton::setMidiMode(MidiModeType type){
+
+void ACMidiSlider::setMidiMode(MidiModeType type){
     midiMode = type;
     if (midiMode == MIDI_MODE_NORMAL){
         bIsMidiSetPressed = false;
@@ -113,48 +127,35 @@ void ACMidiButton::setMidiMode(MidiModeType type){
 }
 
 
-
-MidiModeType ACMidiButton::getMidiMode(){
+MidiModeType ACMidiSlider::getMidiMode(){
     return midiMode;
 }
 
-void ACMidiButton::setMidiMessage(ofxMidiMessage msg){
+void ACMidiSlider::setMidiMessage(ofxMidiMessage msg){
     midiMsg = msg;
 }
 
-ofxMidiMessage ACMidiButton::getMidiMessage(){
+ofxMidiMessage ACMidiSlider::getMidiMessage(){
     return midiMsg;
 }
 
-void ACMidiButton::triggerMidiEvent(ofxMidiMessage msg){
+void ACMidiSlider::triggerMidiEvent(ofxMidiMessage msg){
     switch (msg.status) {
         case MIDI_NOTE_ON:
             if (msg.pitch == midiMsg.pitch) {
-                bIsPressed = true;
-                ofNotifyEvent(midiTriggerEvent, bIsPressed);
             }
             
             break;
         case MIDI_NOTE_OFF:
             if (msg.pitch == midiMsg.pitch) {
-                bIsPressed = false;
-                ofNotifyEvent(midiTriggerEvent, bIsPressed);
             }
             break;
         case MIDI_CONTROL_CHANGE:
             if (msg.control == midiMsg.control) {
-
-                if (msg.value > 64) {
-                    bIsPressed = true;
-                    ofNotifyEvent(midiTriggerEvent, bIsPressed);
-                }
-                else{
-                    bIsPressed = false;
-                    ofNotifyEvent(midiTriggerEvent, bIsPressed);
-                }
+                sliderVal =(rect.width/128.0 )* msg.value;
+                ofNotifyEvent(knobValueEvent, msg.value);
 
             }
-            
             
             break;
             
@@ -163,47 +164,23 @@ void ACMidiButton::triggerMidiEvent(ofxMidiMessage msg){
     }
 }
 
-void ACMidiButton::setTag(int tag){
+void ACMidiSlider::setTag(int tag){
     tagNum = tag;
 }
 
-int ACMidiButton::getTag(){
+int ACMidiSlider::getTag(){
     return tagNum;
 }
 
-void ACMidiButton::setPressed(bool bSet){
-    bIsPressed = bSet;
-}
-
-bool ACMidiButton::isPressed(){
-    return bIsPressed;
-}
-
-bool ACMidiButton::isSetMidiPressed(){
+bool ACMidiSlider::isSetMidiPressed(){
     return bIsMidiSetPressed;
 }
 
-void ACMidiButton::drawPressed(){
-    ofSetColor(pressedColor);
-    ofFill();
-    ofRect(rect);
-    
-
-}
-
-
-
-void ACMidiButton::drawReleased(){
-    ofSetColor(releasedColor);
-    ofNoFill();
-    ofRect(rect);
-}
-
-void ACMidiButton::drawMidiMessage(){
+void ACMidiSlider::drawMidiMessage(){
     ofSetColor(255, 0, 0);
     switch (midiMsg.status) {
         case MIDI_NOTE_ON:
-            midiStr = ofToString(midiMsg.channel)+"/NO/"+ofToString(midiMsg.pitch);
+            midiStr = "";
             
             break;
         case MIDI_CONTROL_CHANGE:
@@ -217,18 +194,24 @@ void ACMidiButton::drawMidiMessage(){
     msgFont.drawString(midiStr, posX+hMargin, posY + bBox.height +vMargin);
 }
 
-void ACMidiButton::draw(){
-    if (bIsPressed && midiMode == MIDI_MODE_NORMAL) {
-        drawPressed();
+void ACMidiSlider::draw(){
+    if (midiMode == MIDI_MODE_NORMAL) {
+        ofSetColor(sliderColor);
+        ofNoFill();
+        ofRect(rect);
+        ofSetColor(barColor);
+        ofFill();
+        // only when valute is available
+  
+        ofRect(ofRectangle(posX, posY, sliderVal ,bBox.height + vMargin * 2));
     }
     
     ofSetColor(255);
     font.drawString(buttonTitle, posX+hMargin, posY + bBox.height +vMargin);
     
-    drawReleased();
     
     if(midiMode == MIDI_MODE_EDIT){
-
+        
         if (bIsMidiSetPressed) {
             ofSetColor(midiPressedColor);
             ofFill();
@@ -239,7 +222,7 @@ void ACMidiButton::draw(){
             ofSetColor(midiReleasedColor);
             ofFill();
             ofRect(rect);
-
+            
         }
         
         
@@ -247,34 +230,62 @@ void ACMidiButton::draw(){
     
 }
 
-void ACMidiButton::enableEvents(bool bSet){
+void ACMidiSlider::enableEvents(bool bSet){
     bEnableEvents = bSet;
 }
 
-void ACMidiButton::mouseMoved(ofMouseEventArgs& event){
+void ACMidiSlider::updateBarPos(float x, float y){
     
+    x = x -posX;
+    if(x > 0 && x < rect.width)
+    {
+        sliderVal = x;
+    }
+    else if (x < 0){
+        sliderVal = 0;
+    }
+    else if ( x > rect.width){
+        sliderVal = rect.width;
+    }
+    int val = (int)ofMap(sliderVal, 0, rect.width, 0, 127);
+    ofNotifyEvent(knobValueEvent, val);
 }
 
-void ACMidiButton::mouseDragged(ofMouseEventArgs& event){
-    
+
+void ACMidiSlider::mouseMoved(ofMouseEventArgs& event){
+    bHasFocus = false;
 }
 
-void ACMidiButton::mousePressed(ofMouseEventArgs& event){
+void ACMidiSlider::mouseDragged(ofMouseEventArgs& event){
+    if(bHasFocus){
+        dragX = event.x - startMouseX;
+        dragY = event.y - startMouseY;
+        bIsDragged = true;
+//        cout << "drag x:" <<dragX << endl;
+//        sliderVal = (rect.width/128.0 ) *(int)(ofMap(dragX, -ofGetWidth()/6, ofGetWidth()/6, 0, 127));
+//        if (sliderVal < 0) sliderVal = 0;
+//        if (sliderVal > rect.width) sliderVal = rect.width;
+        updateBarPos(event.x, event.y);
+    }
+
+}
+
+void ACMidiSlider::mousePressed(ofMouseEventArgs& event){
     bHasFocus = false;
     if (rect.inside(event.x, event.y)) {
         
         bHasFocus = true;
         
+        updateBarPos(event.x, event.y);
+        
         bIsMidiSetPressed = !bIsMidiSetPressed;
         
-        if (bToggleButton) {
-            bIsPressed = !bIsPressed;
-        }
-        else{
-            bIsPressed = true;
-        }
+
+        
+        startMouseX = event.x;
+        startMouseY = event.y;
+        
         if(bEnableEvents){
-            ofNotifyEvent(mousePressEvent, bIsPressed);
             ofNotifyEvent(tagEvent, tagNum);
         }
         
@@ -284,18 +295,14 @@ void ACMidiButton::mousePressed(ofMouseEventArgs& event){
     }
 }
 
-void ACMidiButton::mouseReleased(ofMouseEventArgs& event){
+void ACMidiSlider::mouseReleased(ofMouseEventArgs& event){
     if (bHasFocus) {
-        
-        if (bToggleButton) {
+        if (rect.inside(event.x, event.y)) {
+            updateBarPos(event.x, event.y);
         }
-        else{
-            bIsPressed = false;
-            if(bEnableEvents){
-                ofNotifyEvent(mousePressEvent, bIsPressed);
-            }
-        }
-        
+        bIsDragged = false;
+        dragX = 0.0;
+        dragY = 0.0;
     }
     bHasFocus = false;
 }
