@@ -12,7 +12,6 @@
 #include "ofxMidi.h"
 #include "ACMidiButton.h"
 
-#define numOfShowPortList (3)
 
 class ACMidiController : public ofxMidiListener{
 public:
@@ -21,6 +20,8 @@ public:
     
     void setup();
     void draw();
+    
+    void setMidiMode(MidiModeType type);
     
     void showMidiPorts();
     void openPort(string deviceName);
@@ -39,12 +40,14 @@ private:
     void draw(ofEventArgs& event);
     
     ACMidiButton midiPortListOpenButton;
-    ACMidiButton portListButtons[numOfShowPortList];
+    ACMidiButton playButton;
     
     vector<ACMidiButton*> lists;
-//    vector<ACMidiButton*> portListButtons;
+    
+
     
     void openPortEventHandler(bool &bPress);
+    void controlButtonEventHandler(int &tag);
     void portButtonEventHandler(int &tag);
     
 };

@@ -16,9 +16,7 @@ ACMidiController::~ACMidiController(){
     midiIn.removeListener(this);
     //ofRemoveListener(ofEvents().draw, this, &ACMidiController::draw);
     ofRemoveListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::openPortEventHandler);
-    for (int i = 0; i < numOfShowPortList; i++) {
-        ofRemoveListener(portListButtons[i].tagEvent, this, &ACMidiController::portButtonEventHandler);
-    }
+
 }
 
 void ACMidiController::setup() {
@@ -32,16 +30,12 @@ void ACMidiController::setup() {
     midiPortListOpenButton.setReleasedColor(ofColor(255,255,255));
     midiPortListOpenButton.setToggle(true, false);
     
-    
-    for (int i = 0; i < numOfShowPortList; i++) {
-        portListButtons[i].setup(20, 20, "");
-        portListButtons[i].setPressedColor(ofColor(255,0,0));
-        portListButtons[i].setReleasedColor(ofColor(255,255,255));
-        portListButtons[i].setToggle(true, false);
-        portListButtons[i].setTag(i);
-        ofAddListener(portListButtons[i].tagEvent, this, &ACMidiController::portButtonEventHandler);
-    }
-    
+    playButton.setup(300, 20, "PLAY");
+    playButton.setPressedColor(ofColor(255,0,0));
+    playButton.setReleasedColor(ofColor(255,255,255));
+    playButton.setToggle(false, false);
+    playButton.setTag(0);
+    ofAddListener(playButton.tagEvent, this, &ACMidiController::controlButtonEventHandler);
     
     midiIn.addListener(this);
     ofAddListener(midiPortListOpenButton.pressEvent, this, &ACMidiController::openPortEventHandler);
@@ -49,6 +43,11 @@ void ACMidiController::setup() {
     
     midiMode = MIDI_MODE_NORMAL;
 }
+
+void ACMidiController::setMidiMode(MidiModeType type){
+    midiMode = type;
+}
+
 
 void ACMidiController::showMidiPorts(){
     vector<string> ports = midiIn.getPortList();
@@ -70,24 +69,34 @@ void ACMidiController::newMidiMessage(ofxMidiMessage& msg) {
 	// make a copy of the latest message
 	midiMessage = msg;
     
-    ofLogNotice("new message!!");
-}
-void ACMidiController::draw(){
-    midiPortListOpenButton.setMidiMode(midiMode);
-    midiPortListOpenButton.draw();
+    cout<< "status: " << ofxMidiMessage::getStatusString(midiMessage.status) << endl;
+    cout<< "channel: " << midiMessage.channel << endl;
+    cout<< "pitch: " << midiMessage.pitch << endl;
+    cout<< "velocity: " << midiMessage.velocity << endl;
+    cout<< "control: " << midiMessage.control << endl;
+    cout<< "value: " << midiMessage.value << endl;
     
-    if(midiPortListOpenButton.isPressed()){
-//        for (int i = 0; i < numOfShowPortList; i++) {
-        for (int i = 0; i < lists.size(); i++) {
-
-//            portListButtons[i].enableEvents(true);
-//            portListButtons[i].draw();
-            lists[i]->draw();
+    
+    if (midiMessage.control == 55) {
+        if(midiMessage.value > 64){
+            playButton.setPressed(true);
+            cout << "play" << endl;
+        }
+        else{
+            playButton.setPressed(false);
+            cout << "stop" << endl;
         }
     }
-    else{
-        for (int i = 0; i < numOfShowPortList; i++) {
-//            portListButtons[i].enableEvents(false);
+}
+
+void ACMidiController::draw(){
+
+    midiPortListOpenButton.draw();
+    playButton.draw();
+    if(midiPortListOpenButton.isPressed()){
+        for (int i = 0; i < lists.size(); i++) {
+
+            lists[i]->draw();
         }
     }
 }
@@ -100,11 +109,9 @@ void ACMidiController::openPortEventHandler(bool &bPress){
     if (bPress) {
         cout << "open midi ports" << endl;
         portLists = midiIn.getPortList();
-//        for (int i = 0; i < numOfShowPortList; i++) {
         cout<< "set size: " << portLists.size() << endl;
         for (int i = 0; i < portLists.size(); i++) {
-//            portListButtons[i].setTitle(portLists[i]);
-//            portListButtons[i].setPosition(20, 30 + 30 +30*i);
+
             
             
             
@@ -117,7 +124,6 @@ void ACMidiController::openPortEventHandler(bool &bPress){
 //            button->setToggle(true, false);
 //            button->setTag(i);
 //            ofAddListener(button->tagEvent, this, &ACMidiController::portButtonEventHandler);
-//            
 //            lists.push_back(button);
             
             lists.push_back(new ACMidiButton());
@@ -136,35 +142,17 @@ void ACMidiController::openPortEventHandler(bool &bPress){
         cout << "free size:" << lists.size() << endl;
         
         for (int i = 0; i < lists.size(); i++) {
-            //            portListButtons[i].setTitle(portLists[i]);
-            //            portListButtons[i].setPosition(20, 30 + 30 +30*i);
             ofRemoveListener(lists[i]->tagEvent, this, &ACMidiController::portButtonEventHandler);
+            // delete manually!!!!!
             delete lists[i];
             
         }
+        // important!!!!
         lists.clear();
     }
 }
 
 void ACMidiController::portButtonEventHandler(int &tag){
-    
-    
-    
-//    if(portListButtons[tag].isPressed()){
-//        cout << "port number: " << tag << " chosen" <<endl;
-//        openPort(portLists[tag]);
-//    }
-//    else{
-//        cout << "port closed" <<endl;
-//        midiIn.closePort();
-//    }
-//    
-//    for (int i = 0; i < numOfShowPortList; i++) {
-//        if( i != tag){
-//            portListButtons[i].setPressed(false);
-//        }
-//        
-//    }
     if(lists[tag]->isPressed()){
         cout << "port number: " << tag << " chosen" <<endl;
         openPort(portLists[tag]);
@@ -173,13 +161,22 @@ void ACMidiController::portButtonEventHandler(int &tag){
         cout << "port closed" <<endl;
         midiIn.closePort();
     }
-    
-    cout << "tag:" << tag << endl;
-    cout << "list size:" << lists.size() << endl;
+
     for (int i = 0; i < lists.size(); i++) {
         if( i != tag){
             lists[i]->setPressed(false);
         }
         
+    }
+}
+
+void ACMidiController::controlButtonEventHandler(int &tag){
+    switch (tag) {
+        case 0:
+            cout << "play" << endl;
+            break;
+            
+        default:
+            break;
     }
 }
