@@ -32,8 +32,7 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
     callMyNamePlayer.reserve(fileCount);
     callMyNamePlayer.clear();
     
-    playMany = 1;
-    playDelay = 70;
+    
     playCount = 0;
     bSwingOn = false;
 
@@ -58,6 +57,15 @@ void CallMyNameController::setup(string folderPath, string allowableExt){
     shufflePlayOrder();
     
     ofLogNotice("stop");
+    
+    if(fileCount > 0){
+        playMany = 1;
+        playDelay = 70;
+    }
+    else{
+        playMany = 0;
+        playDelay = 70;
+    }
 }
 
 // this is not working i think it's because you ofSoundPlayer and Vector copy is not working

@@ -65,8 +65,13 @@ void testApp::setup(){
     
     ofSetVerticalSync(true);
     
-    playMany = 1;
-    playDelay = 70;
+    if (callMyNameController.getFileCount() > 0){
+        playMany = 1;
+        playDelay = 70;
+        callMyNameController.setPlayMany(playMany);
+        callMyNameController.setPlayDelay(playDelay);
+    }
+
 
 }
 
@@ -240,10 +245,14 @@ void testApp::delayValueEventHandler(int &val){
 
 void testApp::playNumEventHandler(int &val){
     cout << "play num: " << val << endl;
-    playMany = (int)ofMap(val, 0, 127, 1, callMyNameController.getFileCount());
-    playNumSlider.setTitle("MANY: " + ofToString(playMany) );
-    cout << "play Count: " << playMany << endl;
-    callMyNameController.setPlayMany(playMany);
+    if(callMyNameController.getFileCount()>0)
+    {
+        playMany = (int)ofMap(val, 0, 127, 1, callMyNameController.getFileCount());
+        playNumSlider.setTitle("MANY: " + ofToString(playMany) );
+        cout << "play Count: " << playMany << endl;
+        callMyNameController.setPlayMany(playMany);
+    }
+    
 }
 
 void testApp::swingOnButtonEventHandler(bool &bPress){
